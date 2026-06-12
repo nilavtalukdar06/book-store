@@ -15,12 +15,16 @@ export const register = async (req: Request, res: Response) => {
       password,
       name,
     });
-    return new ApiResponse(
-      StatusCodes.OK,
-      true,
-      "user created successfully",
-      data,
-    );
+    return res
+      .status(StatusCodes.CREATED)
+      .json(
+        new ApiResponse(
+          StatusCodes.CREATED,
+          true,
+          "user created successfully",
+          data,
+        ),
+      );
   } catch (error) {
     logger.error(error);
     if (error instanceof ApiError) {

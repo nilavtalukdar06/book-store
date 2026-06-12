@@ -37,7 +37,7 @@ export const register = async (req: Request, res: Response) => {
           StatusCodes.INTERNAL_SERVER_ERROR,
           false,
           "failed to create user",
-          {},
+          error,
         ),
       );
   }
@@ -66,7 +66,7 @@ export const login = async (req: Request, res: Response) => {
           StatusCodes.INTERNAL_SERVER_ERROR,
           false,
           "failed to login",
-          {},
+          error,
         ),
       );
   }

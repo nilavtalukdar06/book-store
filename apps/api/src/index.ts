@@ -4,6 +4,7 @@ import logger from "./config/logger";
 import { ApiResponse } from "./utils/response";
 import StatusCodes from "http-status-codes";
 import authRoutes from "./routes/auth";
+import bookRoutes from "./routes/book";
 
 const app: Application = express();
 const port = env.PORT || 3000;
@@ -11,6 +12,7 @@ const port = env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
+app.use("/api/book", bookRoutes);
 
 app.get("/health", (_req: Request, res: Response) => {
   return res

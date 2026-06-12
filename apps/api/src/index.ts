@@ -5,10 +5,14 @@ import { ApiResponse } from "./utils/response";
 import StatusCodes from "http-status-codes";
 import authRoutes from "./routes/auth";
 import bookRoutes from "./routes/book";
+import { corsMiddleware } from "./middlewares/cors";
+import { apiRateLimiter } from "./middlewares/rateLimit";
 
 const app: Application = express();
 const port = env.PORT || 3000;
 
+app.use(corsMiddleware);
+app.use(apiRateLimiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);

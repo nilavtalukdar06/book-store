@@ -1,6 +1,6 @@
 import { PrismaClient, User } from "../generated/prisma/client";
 
-export abstract class UserRepository {
+export class UserRepository {
   private prisma: PrismaClient;
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;

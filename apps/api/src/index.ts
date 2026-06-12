@@ -7,6 +7,9 @@ import StatusCodes from "http-status-codes";
 const app: Application = express();
 const port = env.PORT || 3000;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/health", (_req: Request, res: Response) => {
   return res
     .status(200)

@@ -1,4 +1,4 @@
-class ApiError extends Error {
+export class ApiError extends Error {
   public readonly statusCode: number;
   public readonly success: boolean;
   public readonly message: string;

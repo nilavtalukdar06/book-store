@@ -4,15 +4,14 @@ import { COLORS } from "../colors/colors";
 const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: COLORS.background,
-    padding: 20,
-    justifyContent: "center",
-  },
   scrollViewStyle: {
     flex: 1,
     backgroundColor: COLORS.background,
+  },
+  contentContainer: {
+    flexGrow: 1,
+    padding: 20,
+    justifyContent: "center",
   },
   topIllustration: {
     alignItems: "center",
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 4,
+    elevation: 0,
     borderWidth: 2,
     borderColor: COLORS.border,
     marginTop: -24,

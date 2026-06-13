@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Image } from "react-native";
 import { COLORS } from "../../colors/colors";
+import { Link } from "expo-router";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState<string>("");
@@ -96,6 +97,14 @@ export default function LoginScreen() {
                 <Text style={styles.buttonText}>Login</Text>
               )}
             </TouchableOpacity>
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>Don't have an account?</Text>
+              <Link href="/register" asChild>
+                <TouchableOpacity>
+                  <Text style={styles.link}>Sign Up</Text>
+                </TouchableOpacity>
+              </Link>
+            </View>
           </View>
         </View>
       </View>

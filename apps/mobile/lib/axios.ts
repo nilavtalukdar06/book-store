@@ -10,11 +10,9 @@ export const api = axios.create({
   },
 });
 
-const secureStorage = new SecureStorage();
-
 api.interceptors.request.use(
   async (config) => {
-    const token = await secureStorage.getToken();
+    const token = await SecureStorage.getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -27,7 +25,7 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      await secureStorage.removeToken();
+      await SecureStorage.removeToken();
     }
     return Promise.reject(error);
   },

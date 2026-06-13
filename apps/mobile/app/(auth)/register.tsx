@@ -2,6 +2,7 @@ import styles from "@/styles/register";
 import { useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Platform,
   Text,
@@ -15,14 +16,16 @@ import { Link } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, RegisterSchema } from "@/validators/auth";
+import { useRegister } from "@/hooks/auth-hooks";
 
 export default function RegisterScreen() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const registerMutation = useRegister();
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -32,8 +35,12 @@ export default function RegisterScreen() {
     },
   });
 
-  const handleSignUp = (data: RegisterSchema) => {
-    console.log(data);
+  const handleSignUp = async (data: RegisterSchema) => {
+    try {
+      await registerMutation.mutateAsync(data);
+    } catch (error) {
+      Alert.alert("Registration Failed", "Something went wrong");
+    }
   };
 
   return (
@@ -163,10 +170,10 @@ export default function RegisterScreen() {
             </View>
             <TouchableOpacity
               style={styles.button}
-              disabled={isSubmitting}
+              disabled={registerMutation.isPending}
               onPress={handleSubmit(handleSignUp)}
             >
-              {isSubmitting ? (
+              {registerMutation.isPending ? (
                 <ActivityIndicator color="#fff" />
               ) : (
                 <Text style={styles.buttonText}>Sign Up</Text>

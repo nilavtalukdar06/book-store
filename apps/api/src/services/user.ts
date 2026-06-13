@@ -22,25 +22,33 @@ export class UserService {
     });
     const token = generateToken(user.id);
     return {
-      userId: user.id,
+      user: {
+        name: user.name,
+        email: user.email,
+        profileImage: user.profileImageUrl,
+      },
       token,
     };
   }
   async login(data: LoginInput) {
-    const existingUser = await User.findByEmail(data.email);
-    if (!existingUser) {
+    const user = await User.findByEmail(data.email);
+    if (!user) {
       throw new ApiError(401, false, "invalid credentials", {});
     }
     const isPasswordCorrect = await comparePassword(
       data.password,
-      existingUser.password,
+      user.password,
     );
     if (!isPasswordCorrect) {
       throw new ApiError(401, false, "invalid credentials", {});
     }
-    const token = generateToken(existingUser.id);
+    const token = generateToken(user.id);
     return {
-      userId: existingUser.id,
+      user: {
+        name: user.name,
+        email: user.email,
+        profileImage: user.profileImageUrl,
+      },
       token,
     };
   }

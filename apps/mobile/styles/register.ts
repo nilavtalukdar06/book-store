@@ -91,6 +91,20 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontWeight: "600",
   },
+  errorInputContainer: {
+    borderColor: "#EF4444",
+    borderWidth: 1.5,
+  },
+  errorText: {
+    color: "#EF4444",
+    fontSize: 12,
+    marginTop: 6,
+    marginLeft: 4,
+  },
+  inputContainerFocused: {
+    borderColor: COLORS.primary,
+    borderWidth: 1.5,
+  },
 });
 
 export default styles;

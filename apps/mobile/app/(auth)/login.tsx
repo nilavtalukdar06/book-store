@@ -13,14 +13,28 @@ import {
 import { Image } from "react-native";
 import { COLORS } from "../../colors/colors";
 import { Link } from "expo-router";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, LoginSchema } from "@/validators/auth";
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleLogin = () => {};
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const handleLogin = (data: LoginSchema) => {
+    console.log(data);
+  };
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -39,40 +53,67 @@ export default function LoginScreen() {
           <View style={styles.formContainer}>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Email</Text>
-              <View style={styles.inputContainer}>
+              <View
+                style={[
+                  styles.inputContainer,
+                  errors.email && styles.errorInputContainer,
+                ]}
+              >
                 <Ionicons
                   name="mail-outline"
                   size={20}
-                  color={COLORS.primary}
+                  color={errors.email ? "#EF4444" : COLORS.primary}
                   style={styles.inputIcon}
                 />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter your email"
-                  placeholderTextColor={COLORS.placeholderText}
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
+                <Controller
+                  control={control}
+                  name="email"
+                  render={({ field }) => (
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Enter your email"
+                      placeholderTextColor={COLORS.placeholderText}
+                      value={field.value}
+                      onChangeText={field.onChange}
+                      onBlur={field.onBlur}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                    />
+                  )}
                 />
               </View>
+              {errors.email && (
+                <Text style={styles.errorText}>{errors.email.message}</Text>
+              )}
             </View>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Password</Text>
-              <View style={styles.inputContainer}>
+              <View
+                style={[
+                  styles.inputContainer,
+                  errors.password && styles.errorInputContainer,
+                ]}
+              >
                 <Ionicons
                   name="lock-closed-outline"
                   size={20}
-                  color={COLORS.primary}
+                  color={errors.password ? "#EF4444" : COLORS.primary}
                   style={styles.inputIcon}
                 />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter your password"
-                  placeholderTextColor={COLORS.placeholderText}
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!showPassword}
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field }) => (
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Enter your password"
+                      placeholderTextColor={COLORS.placeholderText}
+                      value={field.value}
+                      onChangeText={field.onChange}
+                      onBlur={field.onBlur}
+                      secureTextEntry={!showPassword}
+                    />
+                  )}
                 />
                 <TouchableOpacity
                   style={styles.eyeIcon}
@@ -85,13 +126,16 @@ export default function LoginScreen() {
                   />
                 </TouchableOpacity>
               </View>
+              {errors.password && (
+                <Text style={styles.errorText}>{errors.password.message}</Text>
+              )}
             </View>
             <TouchableOpacity
               style={styles.button}
-              onPress={handleLogin}
-              disabled={isLoading}
+              disabled={isSubmitting}
+              onPress={handleSubmit(handleLogin)}
             >
-              {isLoading ? (
+              {isSubmitting ? (
                 <ActivityIndicator color="#fff" />
               ) : (
                 <Text style={styles.buttonText}>Login</Text>

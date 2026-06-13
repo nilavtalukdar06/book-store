@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { Image } from "react-native";
 import { COLORS } from "../../colors/colors";
@@ -16,14 +17,15 @@ import { Link } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginSchema } from "@/validators/auth";
+import { useLogin } from "@/hooks/auth-hooks";
 
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
+  const loginMutation = useLogin();
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -32,8 +34,12 @@ export default function LoginScreen() {
     },
   });
 
-  const handleLogin = (data: LoginSchema) => {
-    console.log(data);
+  const handleLogin = async (data: LoginSchema) => {
+    try {
+      await loginMutation.mutateAsync(data);
+    } catch (error) {
+      Alert.alert("Login Failed", "Something went wrong");
+    }
   };
   return (
     <KeyboardAvoidingView
@@ -132,10 +138,10 @@ export default function LoginScreen() {
             </View>
             <TouchableOpacity
               style={styles.button}
-              disabled={isSubmitting}
+              disabled={loginMutation.isPending}
               onPress={handleSubmit(handleLogin)}
             >
-              {isSubmitting ? (
+              {loginMutation.isPending ? (
                 <ActivityIndicator color="#fff" />
               ) : (
                 <Text style={styles.buttonText}>Login</Text>

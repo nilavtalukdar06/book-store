@@ -1,5 +1,4 @@
 import styles from "@/styles/create";
-import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -17,6 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../../colors/colors";
 import { RenderRatingPicker } from "@/components/render-rating-picker";
 import * as ImagePicker from "expo-image-picker";
+import { useCreateBook } from "@/hooks/book-hooks";
 
 export default function CreateScreen() {
   const [title, setTitle] = useState<string>("");
@@ -24,9 +24,8 @@ export default function CreateScreen() {
   const [rating, setRating] = useState<number>(3);
   const [image, setImage] = useState<string>("");
   const [imageBase64, setImageBase64] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const router = useRouter();
+  const mutation = useCreateBook();
 
   const pickImage = async () => {
     try {
@@ -62,7 +61,22 @@ export default function CreateScreen() {
     }
   };
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    try {
+      await mutation.mutateAsync({
+        title,
+        caption,
+        imageUrl: imageBase64,
+        rating,
+      });
+    } catch (error) {
+      console.error(error);
+      Alert.alert(
+        "Failed to submit",
+        "Failed to submit the book recommendation",
+      );
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -136,9 +150,9 @@ export default function CreateScreen() {
             <TouchableOpacity
               style={styles.button}
               onPress={handleSubmit}
-              disabled={isLoading}
+              disabled={mutation.isPending}
             >
-              {isLoading ? (
+              {mutation.isPending ? (
                 <ActivityIndicator color={COLORS.white} />
               ) : (
                 <>

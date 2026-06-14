@@ -1,6 +1,5 @@
 import { useAuth } from "@/context/auth-context";
 import styles from "@/styles/profile";
-import { Link } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {

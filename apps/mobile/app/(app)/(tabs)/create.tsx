@@ -130,7 +130,7 @@ export default function CreateScreen() {
                 placeholderTextColor={COLORS.placeholderText}
                 value={caption}
                 onChangeText={setCaption}
-                multiline={false}
+                multiline={true}
               />
             </View>
             <TouchableOpacity

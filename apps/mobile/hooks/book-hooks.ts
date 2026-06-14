@@ -3,10 +3,10 @@ import { BookSchema } from "@/validators/book";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 
-const router = useRouter();
-const queryClient = useQueryClient();
-
 export const useCreateBook = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (payload: BookSchema) => {
       return await BookService.createBook(payload);

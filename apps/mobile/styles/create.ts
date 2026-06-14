@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
     padding: 12,
     height: 100,
+    textAlignVertical: "top",
     color: COLORS.textDark,
   },
   ratingContainer: {

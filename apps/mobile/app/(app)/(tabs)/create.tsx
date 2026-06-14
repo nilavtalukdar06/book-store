@@ -1,7 +1,17 @@
 import styles from "@/styles/create";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+  TextInput,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { COLORS } from "../../../colors/colors";
+import { RenderRatingPicker } from "@/components/render-rating-picker";
 
 export default function CreateScreen() {
   const [title, setTitle] = useState<string>("");
@@ -31,6 +41,30 @@ export default function CreateScreen() {
             <Text style={styles.subtitle}>
               Share your favorite reads with others
             </Text>
+          </View>
+          <View style={styles.form}>
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Book Title</Text>
+              <View style={styles.inputContainer}>
+                <Ionicons
+                  name="book-outline"
+                  size={20}
+                  color={COLORS.textSecondary}
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter book title"
+                  placeholderTextColor={COLORS.placeholderText}
+                  value={title}
+                  onChangeText={setTitle}
+                />
+              </View>
+            </View>
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Your Rating</Text>
+              <RenderRatingPicker rating={rating} setRating={setRating} />
+            </View>
           </View>
         </View>
       </ScrollView>

@@ -71,3 +71,42 @@ export const login = async (req: Request, res: Response) => {
       );
   }
 };
+
+export const fetchUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      throw new ApiError(
+        StatusCodes.UNAUTHORIZED,
+        false,
+        "user id is not present",
+        {},
+      );
+    }
+    const user = await User.fetchUser(userId);
+    return res
+      .status(StatusCodes.OK)
+      .json(
+        new ApiResponse(
+          StatusCodes.OK,
+          true,
+          "fetched the details of the user",
+          user,
+        ),
+      );
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return res.status(error.statusCode).json(error);
+    }
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json(
+        new ApiError(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          false,
+          "user not found",
+          error,
+        ),
+      );
+  }
+};

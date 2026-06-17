@@ -1,21 +1,27 @@
 import { COLORS } from "@/colors/colors";
 import { LogoutButton } from "@/components/logout-button";
 import { ProfileHeader } from "@/components/profile-header";
-import { useDelete } from "@/hooks/book-hooks";
+import { useDelete, useUserBooks } from "@/hooks/book-hooks";
 import styles from "@/styles/profile";
 import { UserBook } from "@/types/book";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
   Alert,
   Text,
   TouchableOpacity,
   View,
+  FlatList,
+  RefreshControl,
 } from "react-native";
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const mutation = useDelete();
+
+  const { data: book, isLoading, isRefetching, refetch } = useUserBooks();
 
   const confirmDelete = (bookId: string) => {
     Alert.alert(
@@ -80,6 +86,40 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       <ProfileHeader />
       <LogoutButton />
+      {book && !isLoading && (
+        <View style={styles.booksHeader}>
+          <Text style={styles.booksTitle}>Your Recommendations 📚</Text>
+          <Text style={styles.booksCount}>{book.data?.length} books</Text>
+        </View>
+      )}
+      {book && !isLoading && (
+        <FlatList
+          data={book.data}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <BookItem item={item} />}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.booksList}
+          refreshControl={
+            <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+          }
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <Ionicons
+                name="book-outline"
+                size={50}
+                color={COLORS.textSecondary}
+              />
+              <Text style={styles.emptyText}>No recommendations yet</Text>
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => router.push("/create")}
+              >
+                <Text style={styles.addButtonText}>Add Your First Book</Text>
+              </TouchableOpacity>
+            </View>
+          }
+        />
+      )}
     </View>
   );
 }

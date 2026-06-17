@@ -75,9 +75,7 @@ export class UserService {
     }
     return {
       user: {
-        name: user.name,
-        email: user.email,
-        imageUrl: user.profileImageUrl,
+        ...user,
       },
     };
   }

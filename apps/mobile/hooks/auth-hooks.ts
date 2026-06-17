@@ -36,7 +36,7 @@ export const useLogout = () => {
   return logout;
 };
 
-export const fetchUser = () => {
+export const useUser = () => {
   return useQuery({
     queryKey: ["user-profile"],
     queryFn: async () => {

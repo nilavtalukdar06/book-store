@@ -10,10 +10,12 @@ export interface AuthData {
 }
 
 export interface User {
-  id: string
-  name: string;
-  email: string;
-  imageUrl: string;
-  createdAt: string;
-  updatedAt: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    profileImageUrl: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 }

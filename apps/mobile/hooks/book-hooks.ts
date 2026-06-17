@@ -59,7 +59,7 @@ export const useDelete = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["delete-user-books"],
+        queryKey: ["user-books"],
       });
     },
   });

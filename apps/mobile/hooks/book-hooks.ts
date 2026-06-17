@@ -20,6 +20,9 @@ export const useCreateBook = () => {
       queryClient.invalidateQueries({
         queryKey: ["books"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["user-books"],
+      });
       router.replace("/");
     },
   });
@@ -60,6 +63,9 @@ export const useDelete = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user-books"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["books"],
       });
     },
   });

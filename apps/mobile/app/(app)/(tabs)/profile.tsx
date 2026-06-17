@@ -2,6 +2,7 @@ import { COLORS } from "@/colors/colors";
 import { LogoutButton } from "@/components/logout-button";
 import { ProfileHeader } from "@/components/profile-header";
 import { useDelete, useUserBooks } from "@/hooks/book-hooks";
+import { useRefreshOnFocus } from "@/hooks/use-refresh-on-focus";
 import styles from "@/styles/profile";
 import { UserBook } from "@/types/book";
 import { Ionicons } from "@expo/vector-icons";
@@ -22,6 +23,8 @@ export default function ProfileScreen() {
   const mutation = useDelete();
 
   const { data: book, isLoading, isRefetching, refetch } = useUserBooks();
+
+  useRefreshOnFocus(refetch);
 
   const confirmDelete = (bookId: string) => {
     Alert.alert(

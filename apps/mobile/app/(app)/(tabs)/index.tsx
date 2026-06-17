@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/colors/colors";
 import { formatPublishDate } from "@/utils/time";
 import { useBooks } from "@/hooks/book-hooks";
+import { useRefreshOnFocus } from "@/hooks/use-refresh-on-focus";
 
 export default function Index() {
   const {
@@ -23,6 +24,8 @@ export default function Index() {
     refetch,
     isRefetching,
   } = useBooks();
+
+  useRefreshOnFocus(refetch);
 
   const books = Array.from(
     new Map(

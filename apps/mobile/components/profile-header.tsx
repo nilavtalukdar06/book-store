@@ -1,10 +1,12 @@
 import { useUser } from "@/hooks/auth-hooks";
 import styles from "@/styles/profile";
+import { formatMemberSince } from "@/utils/time";
 import { Image } from "expo-image";
 import { View, Text } from "react-native";
 
 export function ProfileHeader() {
   const { data: user, isLoading } = useUser();
+  console.log(user);
   if (!user && !isLoading) return null;
 
   return (
@@ -17,7 +19,8 @@ export function ProfileHeader() {
         <Text style={styles.username}>{user?.data?.name}</Text>
         <Text style={styles.email}>{user?.data?.email}</Text>
         <Text style={styles.memberSince}>
-          🗓️ Joined {formatMemberSince(user?.data?.createdAt)}
+          🗓️ Joined{" "}
+          {formatMemberSince(user?.data?.createdAt ?? Date.now().toString())}
         </Text>
       </View>
     </View>

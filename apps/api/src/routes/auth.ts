@@ -10,6 +10,6 @@ router.post("/register", validate(registerSchema), register);
 
 router.post("/login", validate(loginSchema), login);
 
-router.post("/user", authenticate, fetchUser);
+router.get("/user", authenticate, fetchUser);
 
 export default router;

@@ -1,7 +1,7 @@
 import { useAuth } from "@/context/auth-context";
 import { AuthService } from "@/services/auth";
 import { LoginSchema, RegisterSchema } from "@/validators/auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useRegister = () => {
   const { login } = useAuth();
@@ -34,4 +34,13 @@ export const useLogin = () => {
 export const useLogout = () => {
   const { logout } = useAuth();
   return logout;
+};
+
+export const fetchUser = () => {
+  return useQuery({
+    queryKey: ["user-profile"],
+    queryFn: async () => {
+      return await AuthService.fetchUser();
+    },
+  });
 };

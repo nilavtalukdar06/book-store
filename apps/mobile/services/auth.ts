@@ -1,7 +1,7 @@
 import type { LoginSchema, RegisterSchema } from "@/validators/auth";
 import { api } from "../lib/axios";
 import { ApiResponse } from "../types/api-response";
-import type { AuthData } from "../types/auth";
+import type { AuthData, User } from "../types/auth";
 
 export class AuthService {
   constructor() {}
@@ -13,6 +13,10 @@ export class AuthService {
     payload: RegisterSchema,
   ): Promise<ApiResponse<AuthData>> {
     const { data } = await api.post("/api/auth/register", payload);
+    return data;
+  }
+  static async fetchUser(): Promise<ApiResponse<User>> {
+    const { data } = await api.get("/api/auth/user");
     return data;
   }
 }

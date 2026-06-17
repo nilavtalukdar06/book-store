@@ -8,3 +8,9 @@ export interface AuthData {
   token: string;
   user: AuthUser;
 }
+
+export interface User {
+  name: string;
+  email: string;
+  imageUrl: string;
+}
